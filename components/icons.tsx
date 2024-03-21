@@ -1,3 +1,4 @@
+import { DiscordLogoIcon } from "@radix-ui/react-icons";
 import {
   AlertTriangle,
   ArrowRight,
@@ -7,6 +8,7 @@ import {
   CircuitBoardIcon,
   Command,
   CreditCard,
+  Disc,
   File,
   FileText,
   HelpCircle,
@@ -29,6 +31,7 @@ import {
   User2Icon,
   UserX2Icon,
   X,
+  Package
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -60,6 +63,8 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  discord: DiscordLogoIcon,
+  product: Package,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
