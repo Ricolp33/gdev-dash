@@ -1,6 +1,6 @@
 import { Icons } from "@/components/icons";
 import { NavItem, SidebarNavItem } from "@/types";
-
+import {Wallpaper} from "@/public/Gdev_Wallpaper.png";
 export type User = {
   id: number;
   name: string;
@@ -9,6 +9,16 @@ export type User = {
   verified: boolean;
   status: string;
 };
+
+export type Prod = {
+  id: number;
+  product_name: string;
+  serverip1: string;
+  serverip2: string;
+  updated_at: string;
+  added_at: string;
+};
+
 export const users: User[] = [
   {
     id: 1,
@@ -119,14 +129,14 @@ export const navItems: NavItem[] = [
     label: "Dashboard",
   },
   {
-    title: "Products",
-    href: "/dashboard/products",
+    title: "Your Products",
+    href: "/dashboard/account/products",
     icon: "product",
     label: "Products",
   },
   {
-    title: "User",
-    href: "/dashboard/user",
+    title: "My Account",
+    href: "/dashboard/account",
     icon: "user",
     label: "user",
   }, 
@@ -154,4 +164,34 @@ export const navItems: NavItem[] = [
   //   icon: "login",
   //   label: "login",
   // },
+];
+
+
+export const prod: Prod[] = [
+  {
+    id: 1,
+    product_name: "gdev_nft",
+    serverip1: "0.0.0.0",
+    serverip2: "0.0.0.0",
+    updated_at: "1",
+    added_at: "1",
+
+  },
+  {
+    id: 2,
+    product_name: "gdev_nft",
+    serverip1: "0.0.0.0 ",
+    serverip2: " 0.0.0.0 ",
+    updated_at: "1",
+    added_at: "1",
+  },
+  {
+    id: 3,
+    product_name: "gdev_nft",
+    serverip1: " 0.0.0.0 ",
+    serverip2: " 0.0.0.0 ",
+    updated_at: "1",
+    added_at: "1",
+  },
+ 
 ];
