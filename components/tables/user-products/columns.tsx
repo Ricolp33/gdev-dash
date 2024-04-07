@@ -4,23 +4,24 @@ import { CellAction } from "./cell-action";
 import {  Prod } from "@/constants/data";
 import { Checkbox } from "@/components/ui/checkbox";
 
+// header: ({ table }) => (
+//   <Checkbox
+//     checked={table.getIsAllPageRowsSelected()}
+//     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+//     aria-label="Select all"
+//   />
+// ),
+// cell: ({ row }) => (
+//   <Checkbox
+//     checked={row.getIsSelected()}
+//     onCheckedChange={(value) => row.toggleSelected(!!value)}
+//     aria-label="Select row"
+//   />
+// ),
+
 export const columns: ColumnDef<Prod>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
     enableSorting: false,
     enableHiding: false,
   },

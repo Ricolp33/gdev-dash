@@ -24,12 +24,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
+  searchName: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
+  searchName,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -44,7 +46,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <Input
-        placeholder={`Search ${searchKey}...`}
+        placeholder={`Search ${searchName}...`}
         value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
           table.getColumn(searchKey)?.setFilterValue(event.target.value)

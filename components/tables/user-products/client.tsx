@@ -4,9 +4,12 @@ import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Prod, User } from "@/constants/data";
-import { Plus } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { columns } from "./columns";
+import { Dialog, DialogTrigger, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface ProductsClientProps {
   data: Prod[];
@@ -17,20 +20,44 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
 
   return (
     <>
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-normal">
         <Heading
           title={`Your Products (${data.length})`}
           description="Manage your Products here."
         />
-        <Button
-          className="text-xs md:text-sm"
-          onClick={() => router.push(`/dashboard/user/new`)}
-        >
-          <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="text-xs md:text-sm ml-auto mr-2">
+              <Plus className="mr-2 h-4 w-4" /> Add New
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <Label>Add Product </Label>
+            <Input placeholder="Enter Product Key" />
+            <DialogFooter>
+          <Button type="submit">Save changes</Button>
+          </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="text-xs md:text-sm ">
+              <Edit className="mr-2 h-4 w-4" /> Edit All Products
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <Label>Edit All Products</Label>
+            <Input placeholder="Server IP" />
+            <Input placeholder="Devserver IP" />
+            <DialogFooter>
+          <Button type="submit">Save changes</Button>
+          </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
       </div>
       <Separator />
-      <DataTable searchKey="Prducts" columns={columns} data={data}/>
+      <DataTable searchKey="product_name" searchName="Product name" columns={columns} data={data}/>
     </>
   );
 };
