@@ -5,14 +5,29 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { get } from "http";
+import queryAsync from "@/components/db/queryasync";
+import { use, useEffect, useState } from "react";
+import { da } from "date-fns/locale";
 
 
 const breadcrumbItems = [{ title: "My Account", link: "/dashboard/account" }];
 
 export default function page() {
-  "use client";
-  const { data: session } = useSession();
-  if (!session) {
+  const { data: session} = useSession();
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id]);
+      setData(data);
+      console.log(data);
+    };
+    fetchData();
+  }, []);
+
+  
+  if (!session && !data) {
     return <div>loading...</div>;
   } else {
     return (
