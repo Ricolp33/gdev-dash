@@ -14,12 +14,19 @@ export const authOptions: NextAuthOptions = {
     signIn: "/", //sigin page
   },
   callbacks: {
-    async session({ session, token }) {
-      session.user.id = token.sub as string;
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub as string;// token.uid or token.sub both work
+      }
       return session;
     },
-  },
-  session: {
-    strategy: 'jwt',
+    jwt: async ({ token, account, profile }) => {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token
+        token.id = profile?.sub
+      }
+      return token
+    }
   },
 };

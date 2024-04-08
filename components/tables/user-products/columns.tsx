@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import {  Prod } from "@/constants/data";
 import { Checkbox } from "@/components/ui/checkbox";
+import { tr } from "date-fns/locale";
 
 // header: ({ table }) => (
 //   <Checkbox
@@ -24,30 +25,32 @@ export const columns: ColumnDef<Prod>[] = [
     id: "select",
     enableSorting: false,
     enableHiding: false,
+
+    
   },
   
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "ID",
+  // },
   {
     accessorKey: "product_name",
     header: "Product name",
   },
   {
-    accessorKey: "serverip1",
+    accessorKey: "server_ip1",
     header: "Server IP",
   },
   {
-    accessorKey: "serverip2",
+    accessorKey: "server_ip2",
     header: "Devserver IP",
   },
   {
-    accessorKey: "updated_at",
+    accessorKey: "updated_time",
     header: "Last Updated",
   },
   {
-    accessorKey: "added_at",
+    accessorKey: "created_time",
     header: "Added At",
   },
   {

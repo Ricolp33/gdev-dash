@@ -5,7 +5,7 @@ const getDatabaseConnection = async () => {
     host: 'localhost',
     user: 'root', 
     password: '',
-    database: 'gdev-web', 
+    database: 'gdev-web',
   });
 };
 

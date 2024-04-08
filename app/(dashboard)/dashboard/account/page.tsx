@@ -53,7 +53,7 @@ export default function page() {
                       {session.user?.name}
                     </p>
                     <p className="text-sm leading-none text-muted-foreground">
-                      Rank: Todo
+                      Rank: {session?.user.id}
                     </p>
                   </div>
                 </div>

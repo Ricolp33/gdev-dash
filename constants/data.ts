@@ -1,6 +1,5 @@
 import { Icons } from "@/components/icons";
 import { NavItem, SidebarNavItem } from "@/types";
-import {Wallpaper} from "@/public/Gdev_Wallpaper.png";
 export type User = {
   id: number;
   name: string;
@@ -13,10 +12,10 @@ export type User = {
 export type Prod = {
   id: number;
   product_name: string;
-  serverip1: string;
-  serverip2: string;
-  updated_at: string;
-  added_at: string;
+  server_ip1: string;
+  server_ip2: string;
+  updated_time: string;
+  created_time: string;
 };
 
 export const users: User[] = [
@@ -167,31 +166,3 @@ export const navItems: NavItem[] = [
 ];
 
 
-export const prod: Prod[] = [
-  {
-    id: 1,
-    product_name: "gdev_nft",
-    serverip1: "0.0.0.0",
-    serverip2: "0.0.0.0",
-    updated_at: "1",
-    added_at: "1",
-
-  },
-  {
-    id: 2,
-    product_name: "gdev_nft",
-    serverip1: "0.0.0.0 ",
-    serverip2: " 0.0.0.0 ",
-    updated_at: "1",
-    added_at: "1",
-  },
-  {
-    id: 3,
-    product_name: "gdev_nft",
-    serverip1: " 0.0.0.0 ",
-    serverip2: " 0.0.0.0 ",
-    updated_at: "1",
-    added_at: "1",
-  },
- 
-];
