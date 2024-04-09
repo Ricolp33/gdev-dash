@@ -11,9 +11,23 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import queryAsync from "@/components/db/queryasync";
+import { useEffect, useState } from "react";
+import { Roles, Users } from "@/constants/data";
+
 import { signOut, useSession } from "next-auth/react";
 export function UserNav() {
   const { data: session } = useSession();
+  const [datas, setData] = useState<Users[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id]) as Users[];
+      setData(data[0] );
+    };
+    fetchData();
+  }, [session]);
   if (session) {
     return (
       <DropdownMenu>
@@ -35,7 +49,7 @@ export function UserNav() {
                 {session.user?.name}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
-                Rank: Todo
+                Rank: {Roles[datas?.role]}
               </p>
             </div>
           </DropdownMenuLabel>

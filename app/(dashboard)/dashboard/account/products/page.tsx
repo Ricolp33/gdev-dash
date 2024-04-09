@@ -44,7 +44,33 @@ export default function page() {
         data2.forEach((Element, index) => {
           products.forEach((Element2, index2) => {
             data2[index].product_name = Element2.name;
-          })
+          });
+          const d = data2[index].updated_time as Date;
+          const dformat = [
+            (d.getMonth() + 1).toString().padStart(2, '0'),
+            d.getDate().toString().padStart(2, '0'),
+            d.getFullYear()
+          ].join('/') +
+            ' ' +
+            [
+              d.getHours().toString().padStart(2, '0'),
+              d.getMinutes().toString().padStart(2, '0'),
+              d.getSeconds().toString().padStart(2, '0')
+            ].join(':');
+          data2[index].updated_time = dformat;
+          const d2 = data2[index].created_time as Date;
+          const dformat2 = [
+            (d2.getMonth() + 1).toString().padStart(2, '0'),
+            d2.getDate().toString().padStart(2, '0'),
+            d2.getFullYear()
+          ].join('/') +
+            ' ' +
+            [
+              d2.getHours().toString().padStart(2, '0'),
+              d2.getMinutes().toString().padStart(2, '0'),
+              d2.getSeconds().toString().padStart(2, '0')
+            ].join(':');
+          data2[index].created_time = dformat2;
         });
       }
       console.log(data2);

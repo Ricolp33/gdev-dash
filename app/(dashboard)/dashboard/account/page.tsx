@@ -9,25 +9,26 @@ import { get } from "http";
 import queryAsync from "@/components/db/queryasync";
 import { use, useEffect, useState } from "react";
 import { da } from "date-fns/locale";
+import { Users, Roles } from "@/constants/data";
 
 
 const breadcrumbItems = [{ title: "My Account", link: "/dashboard/account" }];
 
 export default function page() {
   const { data: session} = useSession();
-  const [data, setData] = useState(null);
+  const [datas, setData] = useState<Users[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id]);
-      setData(data);
-      console.log(data);
+      if (!queryAsync) return;
+      const data = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id]) as Users[];
+      setData(data[0] );
     };
     fetchData();
-  }, []);
+  }, [session]);
 
   
-  if (!session && !data) {
+  if (!session && !datas) {
     return <div>loading...</div>;
   } else {
     return (
@@ -53,7 +54,7 @@ export default function page() {
                       {session.user?.name}
                     </p>
                     <p className="text-sm leading-none text-muted-foreground">
-                      Rank: {session?.user.id}
+                      Rank: {Roles[datas?.role]}
                     </p>
                   </div>
                 </div>

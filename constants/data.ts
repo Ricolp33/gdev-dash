@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
 import { NavItem, SidebarNavItem } from "@/types";
+import { array } from "zod";
 export type User = {
   id: number;
   name: string;
@@ -9,13 +10,34 @@ export type User = {
   status: string;
 };
 
+export type Users = {
+  id: number;
+  dc_userid: string;
+  email: string;
+  name: string;
+  role: number;
+  supportID: number;
+};
+
+export const Roles: { [key: number]: string } = {
+  1: "User",
+  2: "VIP",
+  3: "Moderator",
+  4: "Designer",
+  5: "Developer",
+  6: "Development Manager",
+  7: "Adminstrator",
+  8: "System Adminstrator",
+};
+
+
 export type Prod = {
   id: number;
   product_name: string;
   server_ip1: string;
   server_ip2: string;
-  updated_time: string;
-  created_time: string;
+  updated_time: any;
+  created_time: any;
 };
 
 export const users: User[] = [

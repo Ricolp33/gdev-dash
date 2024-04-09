@@ -15,8 +15,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 
+import queryAsync from "@/components/db/queryasync";
+import { useEffect, useState } from "react";
+import { Users } from "@/constants/data";
 export default function page() {
-  const { data: session } = useSession();
+  const { data: session} = useSession();
+  const [data, setData] = useState<Users[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!session?.user?.id) return;
+      const userData = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id])as Users[];
+      if (!userData) return;
+      setData(userData[0]);
+    };
+    fetchData();
+  }, [session]);
+
+
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -100,7 +116,7 @@ export default function page() {
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold blur-md hover:blur-none">000000</div>
+                  <div className="text-2xl font-bold blur-md hover:blur-none">{data?.supportID}</div>
                   <p className="text-xs text-muted-foreground">
                   </p>
                 </CardContent>
