@@ -12,7 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { isIPv4 } from "is-ip";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
 interface ProductsClientProps {
@@ -63,7 +68,9 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
           </DialogTrigger>
           <DialogContent>
             <Label>Add Product </Label>
-      <InputOTP maxLength={0} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+            <Input placeholder="00000000-0000-0000-0000-000000000000" type="text"  />
+
+      {/* <InputOTP maxLength={33} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -111,7 +118,7 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
         <InputOTPSlot index={31} />
         <InputOTPSlot index={32} />
       </InputOTPGroup>
-    </InputOTP>
+    </InputOTP> */}
             <DialogFooter>
           <Button type="submit">Save changes</Button>
           </DialogFooter>
