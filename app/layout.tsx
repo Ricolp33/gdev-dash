@@ -9,8 +9,8 @@ import { getServerSession } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Shadcn",
-  description: "Basic dashboard with Next.js and Shadcn",
+  title: "GDEV Dashboard",
+  description: "GDEV Dashboard",
 };
 
 export default async function RootLayout({
@@ -22,9 +22,11 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
+      <Toaster />
         <Providers session={session}>
-          <Toaster />
+
           {children}
+
         </Providers>
       </body>
     </html>

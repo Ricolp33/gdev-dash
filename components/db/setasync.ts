@@ -1,18 +1,17 @@
 "use server";
 import getDatabaseConnection from './databaseconfig';
 
-const queryAsync = async (query: string, values: any) => {
+const setAsync = async (query: string, values: any) => {
   const connection = await getDatabaseConnection();
   try {
     const [results] = await connection.query(query, values);
-    console.log(results);
-    return results;
+    return true;
   } catch (err) {
     console.error(err);
-    throw err;
+    return false;
   } finally {
     await connection.end();
   }
 }
 
-export default queryAsync;
+export default setAsync;

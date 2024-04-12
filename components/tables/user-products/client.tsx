@@ -7,18 +7,15 @@ import { Prod, User } from "@/constants/data";
 import { Edit, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { columns } from "./columns";
-import { Dialog, DialogTrigger, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { isIPv4 } from "is-ip";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp"
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { useToast } from "@/components/ui/use-toast"
+import queryAsync from "@/components/db/queryasync";
+import setAsync from "@/components/db/setasync";
+import { useSession } from "next-auth/react";
 
 interface ProductsClientProps {
   data: Prod[];
@@ -30,13 +27,13 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
   const [devServerIP, setDevServerIP] = useState("");
   const [errorServerIP, setErrorServerIP] = useState("" as any);
   const [errorDevServerIP, setErrorDevServerIP] = useState(""as any);
+  const { data: session} = useSession();
+  const { toast } = useToast();
   
   const handleServerIPBlur = () => {
-    const ip = serverIP.split(':')[0]
-    if (!isIPv4(ip)) {
+    if (!isIPv4(serverIP) ) {
       console.log('Invalid Server IP');
       setErrorServerIP('Invalid Server IP');
-
     } else {
       console.log('Valid Server IP');
       setErrorServerIP(null);
@@ -44,12 +41,50 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
   }
 
   const handleDevServerIPBlur = () => {
-    const ip = devServerIP.split(':')[0]
-    if (!isIPv4(ip)) {
+    if (!isIPv4(devServerIP)) {
       setErrorDevServerIP('Invalid Dev Server IP');
 
     } else {
       setErrorDevServerIP(null);
+    }
+  }
+  const handleDB = async () => {
+    console.log("e");
+    toast({
+      title: "Updating Products",
+      description: 'this can take a few minutes to reflect on the server.',
+      variant: 'default'
+    });
+    const userData = await queryAsync("SELECT * FROM users WHERE dc_userid = ?", [session?.user?.id]) as any[];
+    const ServerIP = serverIP
+    const DevServerIP = devServerIP
+    const daws = await setAsync("UPDATE user_prod SET server_ip1 = ?, server_ip2 = ? where user_id = ?", [ServerIP , DevServerIP, JSON.parse(JSON.stringify(userData[0].id))]);
+    if (daws) {
+      toast({
+        title: "Successful Updated Products",
+        description: 'All products updated successfully!',
+        variant: 'success'
+      });
+      setTimeout(() => {
+        console.log('refreshing');
+        window.location.reload();
+      }, 3000);
+    }
+  }
+  const handleEditAllProducts = async (e : any) => {
+    if (errorServerIP === 'Invalid Server IP' || errorDevServerIP === 'Invalid Dev Server IP') {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: 'Please enter valid IP addresses! [IPV4 ONLY]',
+        variant: 'destructive'
+      });
+    } else {
+      handleDB();
+      toast({
+        title: "Success",
+        description: 'All products updated successfully! this can take a few minutes to reflect on the server.',
+        variant: 'default'
+      });
     }
   }
 
@@ -68,7 +103,7 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
           </DialogTrigger>
           <DialogContent>
             <Label>Add Product </Label>
-            <Input placeholder="00000000-0000-0000-0000-000000000000" type="text"  />
+            <Input placeholder="GDEV-00000000-0000-0000-0000-000000000000" type="text"  />
 
       {/* <InputOTP maxLength={33} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
       <InputOTPGroup>
@@ -120,7 +155,9 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
       </InputOTPGroup>
     </InputOTP> */}
             <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <DialogClose asChild>
+            <Button type="submit">Save changes</Button>
+          </DialogClose>
           </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -132,12 +169,14 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
           </DialogTrigger>
           <DialogContent>
             <Label>Edit All Products</Label>
-            <Input placeholder="Server IP" type="text"  onBlur={handleServerIPBlur} style={errorServerIP? {borderColor: 'red'}: {}} onChange={e => setServerIP(e.target.value)}/>
+            <Input placeholder="Server IP" type="text"  onBlur={handleServerIPBlur} style={errorServerIP? {borderColor: 'red'}: {}} onChange={e => {setServerIP(e.target.value); handleServerIPBlur(e)}}/>
             {errorServerIP && <p style={{color: 'red'}}>{errorServerIP}</p>}
-            <Input placeholder="Devserver IP" type="ipadress" onBlur={handleDevServerIPBlur} style={errorDevServerIP? {borderColor: 'red'}: {}} onChange={e => setDevServerIP(e.target.value)}/>
+            <Input placeholder="Devserver IP" type="text" onBlur={handleDevServerIPBlur} style={errorDevServerIP? {borderColor: 'red'}: {}} onChange={e => {setDevServerIP(e.target.value); handleDevServerIPBlur(e)}}/>
             {errorDevServerIP && <p style={{color: 'red'}}>{errorDevServerIP}</p>}
             <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <DialogClose asChild>
+          <Button type="submit" onClick={(e) => {handleEditAllProducts(e)}}>Save changes</Button>
+          </DialogClose>
           </DialogFooter>
           </DialogContent>
         </Dialog>
